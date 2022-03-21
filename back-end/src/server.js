@@ -1,5 +1,13 @@
 const express = require('express');
 
+myStats = '{"name":Perry, "age":24, "maidens":null}';
+
+myStatsP = Json.parse(myStats);
+
+stat = myStatsP.name;
+
+console.log(stat);
+
 const app = express();
 
 app.get('/', (req, res) => {
