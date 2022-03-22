@@ -1,27 +1,12 @@
-const express = require('express');
-
-myStats = '{"name":Perry, "age":24, "maidens":null}';
-
-myStatsP = Json.parse(myStats);
-
-stat = myStatsP.name;
-
-console.log(stat);
+var express = require('express');
 
 const app = express();
 
-app.get('/', (req, res) => {
-    res.send('Successful response.');
+require('../routes/api')(app);
+
+// Listen on port 3000, will eventually change to work with env variables
+var server = app.listen(3000, function() {
+    console.log('Listening on port ' + server.address().port);
 })
 
-app.get('/home', (req, res) => {
-    console.log('Time: ', Date.now())
-})
-
-app.post('/addItem', (req, res) => {
-    // DB Query here with req object
-    // name: req.name
-    // item: req.item
-})
-
-app.listen(3000, () => console.log('listening on port 3000'))
+//module.exports = app;
