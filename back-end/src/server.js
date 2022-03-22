@@ -1,11 +1,12 @@
 var express = require('express');
-
-const { MongoClient } = require ('mongodb')
+var mongoose = require('mongoose');
 
 const app = express();
 
 // Import routes so that the express client can see them
 require('../routes/api')(app);
+//Connect mongoose to mongodb
+mongoose.connect(process.env.MONGODB_URI);
 
 const uri = "mongodb+srv://admin:admin@cluster0.ivgkh.mongodb.net/test"
 
@@ -23,4 +24,4 @@ var server = app.listen(3000, function() {
     console.log('Listening on port ' + server.address().port);
 })
 
-module.exports = { client }
+module.exports = { client } 
