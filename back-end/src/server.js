@@ -16,6 +16,7 @@ app.use(bodyParser.json())
 
 // require mongoose models here
 require('../models/User')
+// require models/food
 
 app.use(require('../routes/api/'))
 
