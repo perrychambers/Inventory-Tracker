@@ -14,6 +14,11 @@ var app = express();
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
 
+// require mongoose models here
+require('../models/User')
+
+app.use(require('../routes/api/'))
+
 if(!isProduction) {
     app.use(errorhandler())
 }
