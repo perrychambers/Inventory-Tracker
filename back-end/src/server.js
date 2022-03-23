@@ -1,27 +1,69 @@
-var express = require('express');
-var mongoose = require('mongoose');
+var express = require('express'),
+    mongoose = require('mongoose'),
+    bodyParser = require('body-parser'),
+    errorhandler = require('errorhandler'),
+    dotenv = require('dotenv').config();
 
-const app = express();
+var isProduction = process.env.NODE_ENV === 'production'
+
+// create global app object    
+var app = express();
 
 // Import routes so that the express client can see them
-require('../routes/api')(app);
-//Connect mongoose to mongodb
-mongoose.connect(process.env.MONGODB_URI);
+//app.use(require('../routes/api')(app));
+app.use(bodyParser.urlencoded({ extended: false }))
+app.use(bodyParser.json())
 
-const uri = "mongodb+srv://admin:admin@cluster0.ivgkh.mongodb.net/test"
+if(!isProduction) {
+    app.use(errorhandler())
+}
 
+// Connect to database
 console.log('Connecting to mongodb server...')
-const client = new MongoClient(uri)
-
 try {
-    client.connect();
+    mongoose.connect(process.env.MONGODB_URI)
+    mongoose.set('debug', true)
+    console.log('Connected to mongodb server...')
 } catch (e) {
     console.error(e)
 }
 
-// Listen on port 3000, will eventually change to work with env variables
-var server = app.listen(3000, function() {
-    console.log('Listening on port ' + server.address().port);
+/// catch 404 and forward to error handler
+app.use(function(req, res, next) {
+    var err = new Error('Not Found')
+    err.status = 404
+    next(err)
 })
 
-module.exports = { client } 
+/// error handlers
+
+// development error handler
+// will print stacktrace
+
+if(!isProduction) {
+    app.use(function(err, req, res, next) {
+        console.log(err.stack)
+
+        res.status(err.status || 500) // 500: Internal Server Error
+
+        res.json({'errors': {
+            message: err.message,
+            error: err
+        }});
+    });
+}
+
+// production error handler
+// no stracktrace leaked to user
+app.use(function(err, req, res, next) {
+    res.status(err.status || 500) // 500: Internal Server Error
+    res.json({'errors': {
+        message: err.message,
+        error: err
+    }});
+})
+
+// Listen on port 3000, will eventually change to work with env variables
+var server = app.listen(process.env.PORT || 3000, function() {
+    console.log('Listening on port ' + server.address().port);
+})
