@@ -26,6 +26,7 @@ var UserSchema = new mongoose.Schema({
 }, {timestamps: true});
 
 UserSchema.methods.setPassword = function(password) {
+    // encryption here
     this.password = password
 }
 

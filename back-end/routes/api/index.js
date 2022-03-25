@@ -1,5 +1,6 @@
 var router = require('express').Router();
 router.use('/', require('./users'))
+router.use('/', require('./food'))
 
 /// Mongoose Middleware Function
 router.use(function(err, req, res, next) {

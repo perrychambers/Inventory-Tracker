@@ -2,34 +2,23 @@ var mongoose = require('mongoose')
 
 
 var FoodSchema = new mongoose.Schema({
-    Name: {
-        type: String,
-        lowercase: true, 
-        unique: true, 
-        required: [true, "can't be blank"],
-        match: [/^[a-zA-Z0-9]+$/, 'is invalid'], 
-        index: true,
-    },
-    Price: {
-        type: Number,
-        unique: true,
-        required: [true, "can't be blank"],
-        index: true,
-    },
-    Calories: {
-        type: Number,
-        unique: true,
-        required: [true, "can't be blank"],
-        index: true,
-
-    },
-    Category: {
+    name: {
         type: String,
         lowercase: true,
-        unique: true,
+        unique: true, 
         required: [true, "can't be blank"],
-        match: [/^[a-zA-Z0-9]+$/, 'is invalid'],
+        match: [/^[a-zA-Z]+$/, 'is invalid'], 
         index: true,
+    },
+    price: {
+        type: Number,
+    },
+    calories: {
+        type: Number,
+    },
+    category: {
+        type: String,
+        match: [/^[a-zA-Z0-9]+$/, 'is invalid'],
     },
 }, {timestamps: true});
 
